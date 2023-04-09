@@ -84,6 +84,20 @@ export default function NavbarComponent() {
               Contact
             </Link>
           </Divv>
+
+          <Divv>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+              }}
+              onClick={() => {
+                console.clear();
+              }}
+            >
+              Clear console
+            </Link>
+          </Divv>
         </RowFlex>
       </Nav>
     </>
