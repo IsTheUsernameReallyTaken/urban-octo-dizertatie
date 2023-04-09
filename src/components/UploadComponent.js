@@ -12,6 +12,11 @@ export default function UploadComponent() {
   const [hover2, setHover2] = useState(false);
   var a = {};
 
+  const FETCH = {
+    GET: "get",
+    POST: "post",
+  };
+
   const uploader = Uploader({
     apiKey: "free",
   });
@@ -49,22 +54,35 @@ export default function UploadComponent() {
   );
 
   function playFetch(method, route, data) {
-    fetch(BASE_URL + route, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: data,
-    }).then((response) => {
-      console.clear();
-      if (response.status == "200") {
-        response.json().then((json) => {
-          a = json;
-        });
-      } else return "Request failed";
-    });
-    return a;
+    if (data === {}) {
+      fetch(BASE_URL + route, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+      }).then((response) => {
+        console.clear();
+        if (response.status == "200") {
+          response.json().then((json) => {
+            a = json;
+          });
+        } else return "Request failed";
+      });
+    } else {
+      fetch(BASE_URL + route, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        console.clear();
+        if (response.status == "200") {
+          response.json().then((json) => {
+            a = json;
+          });
+        } else return "Request failed";
+      });
+    }
   }
 
-  function get(route) {
+  function getTesting(route) {
     fetch(BASE_URL + route, {
       method: "get",
       headers: { "Content-Type": "application/json" },
@@ -72,8 +90,7 @@ export default function UploadComponent() {
       console.clear();
       if (response.status == "200") {
         response.json().then((json) => {
-          a = json;
-          setText(a);
+          setText(json);
         });
       }
     });
@@ -88,7 +105,6 @@ export default function UploadComponent() {
       if (response.status == "200") {
         response.json().then((json) => {
           a = json;
-          setText(a);
         });
       }
     });
@@ -108,8 +124,8 @@ export default function UploadComponent() {
             color="primary"
             size="large"
             onClick={() => {
-              let resp = playFetch("get", "testing", {});
-              setText(resp);
+              let response = playFetch(FETCH.GET, "testing", {});
+              console.log(response);
             }}
             onMouseEnter={() => {
               setHover1(true);
@@ -133,7 +149,7 @@ export default function UploadComponent() {
             color="primary"
             size="large"
             onClick={() => {
-              get("testing");
+              getTesting("testing");
             }}
             onMouseEnter={() => {
               setHover2(true);
